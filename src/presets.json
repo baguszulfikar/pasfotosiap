@@ -1,0 +1,58 @@
+[
+  {
+    "id": "cpns",
+    "name": "CPNS / PPPK",
+    "portal": "SSCASN",
+    "background": "merah",
+    "backgroundChoice": false,
+    "formats": ["jpg"],
+    "maxKB": 200,
+    "kbEditable": false,
+    "ratios": ["3x4", "4x6"],
+    "lastChecked": "2024",
+    "sourceName": "IDX Channel, 2024",
+    "sourceUrl": "https://www.idxchannel.com/milenomic/pas-foto-untuk-cpns-ukuran-berapa-ketentuan-lengkap-dan-dokumen-persyaratannya/all"
+  },
+  {
+    "id": "skck",
+    "name": "SKCK",
+    "portal": "SKCK online",
+    "background": "merah",
+    "backgroundChoice": false,
+    "formats": ["jpg"],
+    "maxKB": 300,
+    "kbEditable": true,
+    "ratios": ["4x6"],
+    "lastChecked": null,
+    "sourceName": null,
+    "sourceUrl": null
+  },
+  {
+    "id": "lamaran",
+    "name": "Lamaran kerja",
+    "portal": "Portal lowongan",
+    "background": "merah",
+    "backgroundChoice": true,
+    "formats": ["jpg"],
+    "maxKB": 300,
+    "kbEditable": true,
+    "ratios": ["3x4", "4x6"],
+    "lastChecked": null,
+    "sourceName": null,
+    "sourceUrl": null
+  },
+  {
+    "id": "custom",
+    "name": "Custom",
+    "portal": "Atur sendiri",
+    "background": null,
+    "backgroundChoice": true,
+    "formats": ["jpg", "png"],
+    "maxKB": 200,
+    "kbEditable": true,
+    "ratios": ["2x3", "3x4", "4x6"],
+    "lastChecked": null,
+    "sourceName": null,
+    "sourceUrl": null
+  }
+]
