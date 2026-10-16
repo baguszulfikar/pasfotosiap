@@ -36,3 +36,7 @@ Build command `npm run build`, output `dist`. The generated `dist/_headers` appl
 - Re-verify each preset against the official guide and update `lastChecked`.
 - Wire analytics in `src/track.ts` and add its origin to the CSP in `vite.config.ts`.
 - CSP includes `'unsafe-eval'` only because heic2any's decoder needs it; `connect-src`/`img-src`/`form-action` stay `'self'`.
+
+## Auto-deploy
+
+Every push to `main` runs `.github/workflows/deploy.yml`: tests, build, then `wrangler pages deploy` to the `pasfotosiap` Pages project. Needs repo secrets `CLOUDFLARE_API_TOKEN` (Account › Cloudflare Pages › Edit) and `CLOUDFLARE_ACCOUNT_ID`.
