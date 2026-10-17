@@ -52,7 +52,7 @@ export default defineConfig({
     headersFile(),
     VitePWA({
       registerType: 'autoUpdate',
-      injectRegister: 'script',
+      injectRegister: false, // registered in src/sw.ts
       manifest: {
         name: 'Pas Foto Siap Upload',
         short_name: 'Pas Foto',
@@ -65,6 +65,8 @@ export default defineConfig({
         icons: [{ src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }],
       },
       workbox: {
+        skipWaiting: true,
+        clientsClaim: true, // lets src/sw.ts see the new version take over and reload
         globPatterns: ['**/*.{js,css,html,svg,webmanifest}'],
         // Heavy, on-demand pieces are cached at runtime the first time they are used.
         globIgnores: ['**/heic2any-*.js', '**/vision_bundle-*.js', 'mediapipe/**', 'models/**'],

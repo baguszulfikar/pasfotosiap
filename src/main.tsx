@@ -1,6 +1,7 @@
 import { render } from 'preact';
 import { App } from './App';
 import { findPreset } from './presets';
+import { registerServiceWorker } from './sw';
 import { trackPageView } from './track';
 import './styles.css';
 
@@ -9,3 +10,4 @@ const root = document.getElementById('app')!;
 const presetId = root.dataset.preset || new URLSearchParams(location.search).get('preset');
 render(<App initialPreset={findPreset(presetId)} />, root);
 trackPageView();
+registerServiceWorker();

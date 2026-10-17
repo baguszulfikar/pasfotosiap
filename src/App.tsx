@@ -5,6 +5,7 @@ import { canvasToBlob, coverScale, loadPhoto, renderOutput, UserError, type Tran
 import { BG_COLORS, PRESETS, RATIO_PX, rulesLine, type BgColor, type Format, type Preset, type Ratio } from './presets';
 import { composite, loadSegmenter, NoPersonError, personMask } from './segment';
 import { ShareBox } from './Share';
+import { setWorkInProgress } from './sw';
 import { durationBucket, track } from './track';
 
 type Step = 1 | 2 | 3 | 4;
@@ -100,6 +101,7 @@ export function App({ initialPreset }: { initialPreset?: Preset }) {
       setBg('asli');
       setBgState({ kind: 'idle' });
       setSource(src);
+      setWorkInProgress(true);
       resetTransform(src, ratio);
       loadedAt.current = performance.now();
       track('photo_loaded', preset!.id);
@@ -169,6 +171,7 @@ export function App({ initialPreset }: { initialPreset?: Preset }) {
 
   function restart() {
     setSource(null);
+    setWorkInProgress(false);
     mask.current = null;
     setBg('asli');
     setBgState({ kind: 'idle' });
@@ -430,7 +433,7 @@ export function App({ initialPreset }: { initialPreset?: Preset }) {
                 </div>
               )}
               {feedback === 'done' && <p class="note">Terima kasih atas masukannya!</p>}
-              {feedback !== 'none' && <ShareBox preset={preset.id} />}
+              <ShareBox preset={preset.id} />
             </>
           )}
           <div class="actions">
