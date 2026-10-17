@@ -10,7 +10,11 @@
     "prebuild": "node scripts/copy-mediapipe.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "stats": "npx wrangler@3 d1 execute pasfotosiap-stats --remote --command \"SELECT event, SUM(n) AS total FROM counters WHERE day >= date('now','-30 days') GROUP BY event ORDER BY total DESC\"",
+    "stats:daily": "npx wrangler@3 d1 execute pasfotosiap-stats --remote --command \"SELECT day, SUM(CASE WHEN event='page_view' THEN n END) AS views, SUM(CASE WHEN event='photo_loaded' THEN n END) AS photos, SUM(CASE WHEN event='download' THEN n END) AS downloads, SUM(CASE WHEN event='share' THEN n END) AS shares FROM counters GROUP BY day ORDER BY day DESC LIMIT 30\"",
+    "stats:detail": "npx wrangler@3 d1 execute pasfotosiap-stats --remote --command \"SELECT event, preset, detail, SUM(n) AS total FROM counters WHERE day >= date('now','-30 days') GROUP BY event, preset, detail ORDER BY event, total DESC\"",
+    "og-image": "node scripts/og-image.mjs"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "1.1.1",
@@ -19,6 +23,7 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.1",
+    "@resvg/resvg-js": "^2.6.2",
     "typescript": "^5.6.3",
     "vite": "^5.4.21",
     "vite-plugin-pwa": "^0.20.5",

@@ -40,3 +40,19 @@ Build command `npm run build`, output `dist`. The generated `dist/_headers` appl
 ## Auto-deploy
 
 Every push to `main` runs `.github/workflows/deploy.yml`: tests, build, then `wrangler pages deploy` to the `pasfotosiap` Pages project. Needs repo secrets `CLOUDFLARE_API_TOKEN` (Account › Cloudflare Pages › Edit) and `CLOUDFLARE_ACCOUNT_ID`.
+
+## Usage stats
+
+`functions/api/event.ts` (a Cloudflare Pages Function) counts anonymous events into the D1 database `pasfotosiap-stats`: one row per day × event × preset × label, incremented in place. No IPs, user agents, identifiers or image data are stored. Events: `page_view` (new/returning + path), `photo_loaded`, `bg_swap`, `bg_swap_failed`, `download` (time-to-download bucket), `upload_feedback` (yes/no), `share` (whatsapp/native/copy).
+
+```bash
+npm run stats         # totals per event, last 30 days
+npm run stats:daily   # views / photos / downloads / shares per day
+npm run stats:detail  # breakdown by preset and label
+```
+
+Schema lives in `migrations/`; apply new ones with `npx wrangler@3 d1 migrations apply pasfotosiap-stats --remote`.
+
+## Link preview
+
+`public/og.png` (1200×630) is the WhatsApp/Facebook/Telegram preview. Regenerate with `npm run og-image` after editing `scripts/og-image.mjs`. The site URL used in meta tags and the share button comes from `VITE_SITE_URL` in `.env`; change it when moving to a custom domain.

@@ -150,3 +150,9 @@ button.swatch.on { border: 2px solid var(--brand); font-weight: 600; }
 footer.site { max-width: 560px; margin: 0 auto; padding: 16px; color: var(--muted); font-size: 13px; }
 footer.site nav { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-bottom: 6px; }
 footer.site a { display: inline-block; padding: 6px 0; }
+
+.share { margin-top: 16px; padding: 12px; border: 1px solid var(--line); border-radius: var(--radius); }
+.share p { margin: 0 0 4px; }
+.share .row { margin-bottom: 0; }
+.share .btn { flex: 1; min-width: 150px; }
+.btn.wa { background: #1f7a4d; border-color: #1f7a4d; color: #fff; }

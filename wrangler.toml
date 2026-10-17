@@ -1,0 +1,9 @@
+name = "pasfotosiap"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-01"
+
+# Aggregate, anonymous usage counters (see functions/api/event.ts). No images, IPs or identifiers.
+[[d1_databases]]
+binding = "DB"
+database_name = "pasfotosiap-stats"
+database_id = "5db9f41d-8162-4c89-94ec-e36fc24fcb12"

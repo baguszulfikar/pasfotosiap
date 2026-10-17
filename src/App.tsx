@@ -4,7 +4,8 @@ import { compressToLimit, type Encoded } from './compress';
 import { canvasToBlob, coverScale, loadPhoto, renderOutput, UserError, type Transform } from './image';
 import { BG_COLORS, PRESETS, RATIO_PX, rulesLine, type BgColor, type Format, type Preset, type Ratio } from './presets';
 import { composite, loadSegmenter, NoPersonError, personMask } from './segment';
-import { track } from './track';
+import { ShareBox } from './Share';
+import { durationBucket, track } from './track';
 
 type Step = 1 | 2 | 3 | 4;
 type Bg = 'asli' | BgColor;
@@ -101,7 +102,7 @@ export function App({ initialPreset }: { initialPreset?: Preset }) {
       setSource(src);
       resetTransform(src, ratio);
       loadedAt.current = performance.now();
-      track('photo_loaded', { preset: preset!.id });
+      track('photo_loaded', preset!.id);
       setStep(3);
     } catch (e) {
       setLoadError(e instanceof UserError ? e.message : 'Foto tidak bisa dibuka. Coba foto lain.');
@@ -123,11 +124,11 @@ export function App({ initialPreset }: { initialPreset?: Preset }) {
       mask.current = personMask(seg, source!);
       setBg(next);
       setBgState({ kind: 'idle' });
-      track('bg_swap', { preset: preset!.id, color: next });
+      track('bg_swap', preset!.id, next);
     } catch (e) {
       console.error(e);
       setBgState({ kind: 'error', noPerson: e instanceof NoPersonError });
-      track('bg_swap_failed', { preset: preset!.id, reason: e instanceof NoPersonError ? 'no_person' : 'load' });
+      track('bg_swap_failed', preset!.id, e instanceof NoPersonError ? 'no_person' : 'load');
     }
   }
 
@@ -162,13 +163,7 @@ export function App({ initialPreset }: { initialPreset?: Preset }) {
   }
 
   function onDownload() {
-    track('download', {
-      preset: preset!.id,
-      kb: Math.ceil(result!.blob.size / 1024),
-      seconds: Math.round((performance.now() - loadedAt.current) / 1000),
-      bg,
-      scaleSteps: result!.scaleSteps,
-    });
+    track('download', preset!.id, durationBucket((performance.now() - loadedAt.current) / 1000));
     setFeedback('asked');
   }
 
@@ -424,7 +419,7 @@ export function App({ initialPreset }: { initialPreset?: Preset }) {
                         class="chip"
                         key={String(label)}
                         onClick={() => {
-                          track('upload_feedback', { preset: preset.id, ok: ok as boolean });
+                          track('upload_feedback', preset.id, ok ? 'yes' : 'no');
                           setFeedback('done');
                         }}
                       >
@@ -435,6 +430,7 @@ export function App({ initialPreset }: { initialPreset?: Preset }) {
                 </div>
               )}
               {feedback === 'done' && <p class="note">Terima kasih atas masukannya!</p>}
+              {feedback !== 'none' && <ShareBox preset={preset.id} />}
             </>
           )}
           <div class="actions">
